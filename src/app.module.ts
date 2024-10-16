@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
       database: 'postgres',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // 개발 중에는 true로 설정
+      logging: true,
     }),
     MembersModule,
     AuthModule,
