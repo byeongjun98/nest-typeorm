@@ -1,6 +1,7 @@
-import { IsString, IsEmail, IsPhoneNumber, IsDateString } from 'class-validator';
+import {IsString, IsEmail, IsPhoneNumber, IsDateString, IsNotEmpty} from 'class-validator';
 
 export class MemberDto {
+    @IsNotEmpty()
     @IsString()
     readonly id: string;
 

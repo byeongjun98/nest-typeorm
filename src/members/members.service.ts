@@ -41,9 +41,13 @@ export class MembersService {
     }
 
     async remove(id: string): Promise<void> {
+        if (!id) {
+            throw new Error('ID is required to delete a member');
+        }
         const result = await this.memberRepository.delete(id);
         if (result.affected === 0) {
-            throw new NotFoundException(`Member with id ${id} not found`);
+            throw new Error(`Member with ID ${id} not found or could not be deleted`);
         }
     }
+
 }
