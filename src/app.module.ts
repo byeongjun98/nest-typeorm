@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm'; // TypeOrmModule 임포트
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MembersModule } from './members/members.module'; // MembersModule 임포트
+import { MembersModule } from './members/members.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MembersModule } from './members/members.module'; // MembersModule 임�
       synchronize: true, // 개발 중에는 true로 설정
     }),
     MembersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

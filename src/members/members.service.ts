@@ -6,6 +6,7 @@ import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { MemberDto } from './dto/member.dto';
 import { plainToInstance } from 'class-transformer';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class MembersService {
@@ -15,7 +16,15 @@ export class MembersService {
     ) {}
 
     async create(createMemberDto: CreateMemberDto): Promise<MemberDto> {
-        const member = this.memberRepository.create(createMemberDto);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(createMemberDto.password, salt);
+
+
+        const member = this.memberRepository.create({
+            ...createMemberDto,
+            password: hashedPassword,
+        });
+
         await this.memberRepository.save(member);
         return plainToInstance(MemberDto, member);
     }
@@ -49,5 +58,7 @@ export class MembersService {
             throw new Error(`Member with ID ${id} not found or could not be deleted`);
         }
     }
-
+    async findByUsername(username: string): Promise<Member | undefined> {
+        return this.memberRepository.findOne({where: {username}});
+    }
 }
