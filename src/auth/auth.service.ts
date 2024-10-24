@@ -1,35 +1,31 @@
+import {BadRequestException, Injectable, Module} from '@nestjs/common';
+import {InjectRepository} from "@nestjs/typeorm";
+import {User} from "../user/entities/user.entity";
+import {Repository} from "typeorm";
+import * as bcrypt from 'bcrypt'
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { MembersService } from '../members/members.service';
-import { LoginMemberDto } from './dto/login-member.dto';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly membersService: MembersService,
-        private readonly jwtService: JwtService,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
     ) {}
 
-    async validateMember(loginMemberDto: LoginMemberDto): Promise<any> {
-        const { username, password } = loginMemberDto;
-        const member = await this.membersService.findByUsername(username);
+    async register(username: string, password: string): Promise<User>{
+        const existingUser = await this.userRepository.findOneBy({username});
 
-        if (!member) {
-            throw new UnauthorizedException('Invalid credentials');
+        if(existingUser){
+            throw new BadRequestException(('이미 가입한 아이디입니다'))
         }
 
-        const passwordValid = await bcrypt.compare(password, member.password);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        if (!passwordValid) {
-            throw new UnauthorizedException('Invalid credentials');
-        }
+        return this.userRepository.save({
+            username,
+            password: hashedPassword
+        });
 
-        const payload = { username: member.username, sub: member.id };
-        const token = this.jwtService.sign(payload); // 토큰 발행
 
-        return { access_token: token };
     }
 }
-

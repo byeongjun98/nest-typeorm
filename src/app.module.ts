@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MembersModule } from './members/members.module';
+import { UserModule } from './user/user.module';
+import { ProductModule } from './product/product.module';
 import { AuthModule } from './auth/auth.module';
-import { BoardModule } from './board/board.module';
 
 @Module({
   imports: [
@@ -19,9 +19,9 @@ import { BoardModule } from './board/board.module';
       synchronize: true, // 개발 중에는 true로 설정
       logging: true,
     }),
-    MembersModule,
     AuthModule,
-    BoardModule,
+    ProductModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
