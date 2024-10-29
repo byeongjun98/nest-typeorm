@@ -26,6 +26,13 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## 이 프로젝트 기준
+Postgresql 14 / Node 20 / docker-compose로 구성
+
+```bash
+$ docekr-compose up --build
+```
+
 ## Project setup
 
 ```bash
