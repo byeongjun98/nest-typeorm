@@ -33,7 +33,7 @@ Postgresql 14 / Node 20 / docker-compose로 구성
 $ docekr-compose up --build
 ```
 
-## Project setup
+<!-- ## Project setup
 
 ```bash
 $ npm install
@@ -63,7 +63,7 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-```
+``` -->
 
 ## Resources
 
